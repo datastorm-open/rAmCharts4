@@ -1,0 +1,9 @@
+dependencies:
+  - name: core
+    version: 4.0.0
+    src: htmlwidgets/lib/amcharts4
+    script: core.js
+  - name: amCharts
+    version: 4.0.0
+    src: htmlwidgets/lib/amcharts4
+    script: charts.js
