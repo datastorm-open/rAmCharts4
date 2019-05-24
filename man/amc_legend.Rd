@@ -7,7 +7,7 @@
 amc_legend(x, ...)
 }
 \arguments{
-\item{x}{A \code{billboard} \code{htmlwidget} object.}
+\item{x}{A \code{rAmCharts4} \code{htmlwidget} object.}
 
 \item{...}{Arguments defined in \url{https://www.amcharts.com/docs/v4/}.}
 }

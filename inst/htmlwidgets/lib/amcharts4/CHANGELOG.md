@@ -5,6 +5,828 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 Please note, that this project, while following numbering syntax, it DOES NOT
 adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 
+## [4.4.8] - 2019-05-23
+
+### Added
+
+- `linkWithStrength` added to `ForceDirectedSeries`.
+- `linkWith(node, strength)` method added to `ForceDirectedNode`. Allows adding links without revalidating whole data.
+- `unlinkWith(node)` method added to `ForceDirectedNode`.
+- `expandAll` property added to `ForceDirectedNode` (default: `true`). If set to `false`, only a single level of children will be expanded on click/tap.
+
+### Fixed
+- Links created using `linkWith` data field were not using any strength setting, affecting the layout.
+- Some problems with `maxLevels` on `ForceDirectedSeries` solved.
+
+
+## [4.4.7] - 2019-05-21
+
+### Changed
+- Export: Children columns on hierarchical charts (`TreeMap`, `Sunburst`, `ForceDirectedTree`) are no longer exported to "flat" formats (CSV, XLSX).
+
+
+### Fixed
+- `keepTargetHover` was hiding tooltip when transiting hover from one `Sprite` to another.
+- Firefox was not displaying texts along paths on a page with `base href` set, due to Firefox [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=455986).
+- `SunburstSeries` with 0 values were producing a JS error.
+- Width (or height if vertical) of `Scrollbar`/`Slider` was always 100%, even if it was set to less than 100%.
+- `WordCloud` with long labels that did not fit into container could get into infinite loop and never get drawn.
+- If a lot of `GaugeChart` instances with axis bands were rendered on a single page, stack owerflow error could happen.
+- Adding data to a chart with `XYChartScrollbar` and series in the scrollbar forced full-redraw of scrollbar chart which was making it blink.
+- Z-indexing of `ColumnSeries3D` columns was incorrect in some cases.
+- Tooltip of a 3D slice was not in the center of a slice.
+- Changing of Series' name was not propagating to legend.
+
+
+## [4.4.6] - 2019-05-14
+
+### Fixed
+- Vertical/horizontal bullet positions on `ColumnSeries` were broken since `4.4.5`.
+
+
+## [4.4.5] - 2019-05-13
+
+### Changed
+- Exporting chart data to JSON format now respects `dataFields` setting.
+
+### Fixed
+- Setting `showSystemTooltip = false` on a `Scrollbar` now correctly disables tooltips on its thumb and grips.
+- When data for `ForceDirectedSeries` was changed for the second time, the old links remained visible.
+- Initial scatter of `ForceDirectedSeries` nodes reduced. Results in a better initial animation.
+- Adding data using `addData()` method to a chart with `XYChartScrollbar` was resulting data to be added twice.
+- With some special combination of axes config `XYChart` sometimes could fall into infinite loop.
+- Some JS error when converting coordinates out of bounds of AlbersUSA projection fixed.
+- Tooltip bounds were not being copied when cloning a `Tooltip`.
+
+
+## [4.4.4] - 2019-05-08
+
+### Fixed
+- When data for `ForceDirectedSeries` was changed the old links remained visible.
+- Legend with custom data was causing a JS error.
+- Changing data during `rangechangeended` with `skipEmptyPeriods` enabled was triggering "Cannot read property 'getTime[ of undefined" exception.
+- Slices of `SunburstSeries`, and columns of `TreeMapSeries` were not taking `propertyFields`/`configField` from data.
+
+
+## [4.4.3] - 2019-05-06
+
+### Added
+- `Regression` plugin: two new settings - `simplify` (simplifies output data for faster performance) and `reorder` (orders data in a horizontal linear fashion for scatter plots).
+- `arrangestarted`, `arrangeended`, and `arrangeprogress` events added to `WordCloudSeries`. Allows showing preloader while building the chart.
+
+### Changed
+- `keepSelection` behavior extended. Now it will keep `ValueAxis` selection while scrolling a perpendicular `DateAxis` or `CategoryAxis`.
+
+### Fixed
+- `Regression` plugin: fixed issue with gaps in data.
+- Panning chart with `CategoryAxis` out of range, the axis could pan back with one less category in the range when released.
+- In some cases labels with `bent = true` on `AxisLabelCircular` were positioned incorrectly on `RadarChart`'s Axis ranges.
+- Safari was not displaying base grid of Y axis in some cases.
+- Chart could freeze if there was a very small difference between minimum and maximum values of `ValueAxis` (less than 0.00000001).
+- If `WordCloud` was hidden while arranging words, and then unhidden, the words would overlap in some cases. Arranging of words now stops if container is hidden during the process and resumes when it is unhidden.
+- 3D columns were cut off on IE if the size of Chart container changed after the chart was already build.
+- In some setups with `<base href>` some elements were being drawn incorrectly.
+
+
+## [4.4.2] - 2019-05-02
+
+### Added
+- New property for `Label`: `baseLineRatio` (default `-0.27`) controls how "base line" for a label is calculated, and affects positioning of text. The default might not work for all fonts, so this setting can be used to adjust it for precise positioning.
+- New event for `Sprite`: `"dragged"`. It kicks in right after `"drag"` and can be used to manipulate or correct element's position, which might not be possible using `"drag"` which has built-in position-altering handlers.
+
+### Fixed
+- Export to SVG was not working on Firefox.
+- Some touch issues wit iOS Safari fixed.
+- `ValueAxis` could display non-rounded numbers (caused by floating point problem) sometimes.
+- `maxPanOut` of `MapChart` was being ignored.
+- Chart scrollbar was not being zoomed out when data of a chart changed.
+- `RadarChart` with multiple `RadarColumnSeries` with Y as base axis was displaying columns of a 2nd+ series from wrong position.
+- `chart.dispose()` with a lot of data was very slow. Now it's super fast.
+- Zoom with mouse wheel was buggy when zooming already zoomed-in `XYChart`.
+- Gant chart was not updating columns when `chart.invalidateRawData()` was called.
+- Issue with some `propertyFields` set on a `LineSeries` with no data fixed.
+- Reseting `relativeRotation` of `AxisLabelCircular` to `undefined` didn't work.
+
+
+## [4.4.1] - 2019-04-22
+
+### Changed
+- Now when using `CSVParsing` for parsing external data, `skipRows` will kick in first, removing X rows from the beginning of data, then `useColumnNames` will use the first row of what's left.
+
+### Fixed
+- JSON: Specifying language locale as string (i.e. "fr_FR") now works in JS setups, provided appropriate language file is loaded.
+- Grab/Grabbing cursor was not appearing on Scrollbars on Firefox.
+- `MapChart` used to pan itself when it was zoomed in, `tapToActivate` enabled, and was tapped.
+- Hovering mouse cursor over an `XYChart` while it was initializing could sometimes result in a JS error.
+- Issue with `DateAxis` and `Series` not having dates at certain data items fixed. It was cousing problems with multiple date axes mostly.
+
+
+## [4.4.0] - 2019-04-17
+
+### Added
+- Charts now have new property - `tapToActivate` (default: `false`). If set to `true` it will not react to touch drag gestures until user taps on the chart. [More info](https://www.amcharts.com/docs/v4/concepts/touch/).
+- New element on charts: `dragGrip`. It's a grip that, when enabled, will allow scrolling the page even if the chart functionality does not permit it, e.g. with chart cursor or `MapChart`. [More info](https://www.amcharts.com/docs/v4/concepts/touch/).
+
+### Fixed
+- `NumberFormatter` in charts was ignoring locale settings.
+- `TreeMap` could crash across data update.
+- In some situations `XYCursor` with `"panX"` behavior would not allow panning the chart completely to the edge of data.
+
+
+## [4.3.15] - 2019-04-16
+
+### Added
+- `startendchanged` event added to `Component`. Fired when `start` or `end` is changed. Unlike `startchanged`/`endchanged` this event is fired not immediately but at the end of a cycle.
+
+### Changed
+- `Sunburst` chart's defaalt `radius` set to `95%`.
+
+### Fixed
+- `TreeMap` could produce a JS error if data was changed during interaction with the map.
+- If `Component.addData()` called before chart was initialized, error happened.
+- 3D columns with reversed base axis had wrong z-indexes.
+- `DateAxis`-based chart with single data item got into infinite loop if `startLocation` and `endLocation` were set to `0.5` or `strictMinMax` was set to `true`.
+- Tooltips of series could overlap if series used different `DateAxis` axes.
+- Chart with multiple `DateAxis` and no animated theme was not properly zooming with scrollbar.
+- Implemented a workaround for MSIE which was not updating series masks on chart resize.
+- Disposing `XYCursor` will now remove series/axes tooltips that might be currently displayed because of it.
+
+
+## [4.3.14] - 2019-04-13
+
+### Added
+- New `SliceGrouper` setting: `syncLegend` (default `false`). If set to `true` the legend will be updated dynamically to show only those slices that are currently visible.
+- Plugin `Regression`: new property `result` will store all the results including formula and caculated points.
+- Plugin `Regression`: plugin now has `events` which can be used to attach event handlers such as `"processed"`.
+
+### Fixed
+- `Animation` was failing when source value was string (i.e. "auto") and target value was number (i.e. 10).
+- JSON: Object entries in a `List` were not being their properties set.
+- `MapChart` sometimes could place Map images at incorrect positions.
+
+
+## [4.3.13] - 2019-04-10
+
+### Fixed
+- Using `propertyFields.url` was forcing pointer cursor on all objects from the same template, even if they did not have url set.
+- Memory leak with dynamic changes of data on `TreeMap`.
+- `getPoint()` method of `XYSeries` is now public.
+- Setting `startAngle`/`endAngle` before adding `PieSeries` was causing it to not be drawn.
+- Performance tweaks to 3D columns.
+
+
+## [4.3.12] - 2019-04-09
+
+### Changed
+- Series' `bullets` now accepts objects that are simple `Sprite` elements, not just `Bullet` types. This means you can add `Circle` as bullet (or any other element), to dramatically improve performance on bullet-heavy charts.
+- Default value of `hideOversized` for `LabelBullet` changed to `false`.
+
+### Fixed
+- Dramatically improved performace of `CategoryAxis`.
+- `SliceGrouper` plugin will now not add "Other" slice if there are no slices below threshold or no data at all.
+- `SliceGrouper` now supports dynamic data updates.
+- `ColorSet.reuse = true` was working incorrectly for `PercentSeries`.
+- `timezoneOffset` property of the Date Formatter was causing all minutes to be formatted as zeroes.
+
+
+## [4.3.11] -2019-04-08
+
+### Added
+- New plugin: `SliceGrouper` (allows automatically grouping small slices on any `PercentSeries`, e.g. Pie, Funnel, Pyramid, or Pictorial Stacked). [More info](https://www.amcharts.com/docs/v4/tutorials/plugin-slice-grouper/).
+
+### Changed
+- Changed `centerStrength` default was changed to `0.8` in `ForceDirectedSeries`.
+
+### Fixed
+- Zero-value 3D columns were not visible on `DateAxis`.
+- `FunnelSeries`'' labels were out of bounds sometimes.
+- `Regression` plugin was not working when data was set directly on Series.
+
+
+## [4.3.10] - 2019-04-08
+
+### Changed
+- Corner radius is not supported anymore on 3D slices. A sacrifice towards performance.
+
+### Fixed
+- Performance of `PieChart3D` improved dramatically.
+
+
+## [4.3.9] - 2019-04-06
+
+### Added
+- `ForedDirectedSeries` properties `minRadius` and `maxRadius` can now be set in `Percent`.
+
+### Changed
+- Default value of `ForceDirectedLink.strength` changed to `1` to avoid initial shaking.
+- Default value of `ForceDirectedSeries.manyBodyStrength` changed to `-15`.
+- Default values of `ForceDirectedSeries` properties `minRadius` and `maxRadius` changed to `1%` and `8%` respectively.
+
+### Fixed
+- In `ForedDirectedSeries` the same color was being reused for top-level node and first child node.
+- It was impossible to set colors of `ForedDirectedSeries` data items via data.
+- `ColorSet` setting `reuse = true` was acting incorrectly.
+
+## [4.3.8] - 2019-04-05
+
+### Added
+- New chart type plugin: `ForceDirectedTree`. [More info](https://www.amcharts.com/docs/v4/chart-types/force-directed/). Also check bundled examples: `force-directed-tree`, `force-directed-tree-expandable`, and `force-directed-network`.
+- New `CategoryAxis` property: `positionToCategory(position)`.
+
+
+## [4.3.7] - 2019-04-04
+
+### Fixed
+- `TreeMap` was erroring out since `4.3.6` unless "animated" theme was enabled.
+- On `TreeMap`'s legend with default markers `valueLabels` was not working on first load.
+
+
+## [4.3.6] - 2019-04-04
+
+### Added
+- New `DateFormatter` property: `timezoneOffset`. Set it to a number of minutes (to UTC) to recalculate all date/time to a specific time zone.
+
+### Changed
+- `DateFormatter` will now use locale information for its default date format set in `dateFormat`. Format in default "International English" locale did not change, and remains at `"yyyy-MM-dd"`. Other locales might or might not produce different date formats.
+- Improved `ValueAxis` scale calculation algorithm when `min`/`max` is set.
+- `"hit"` event is now added on `FlowDiagramNode` template instead of the class itself. This allows disabling default toggle/drag behavior and replacing with own events.
+
+### Fixed
+- Themes were not properly being applied to bullets.
+- `Popup.draggable` was being ignored.
+- `Series.legendSettings.itemValueText` was being ignored when `cursorTooltipEnabled = false`. #1141
+- Mouse events over `LineSeries` segments where happening at wrong position.
+- `legend.valueLabels` on `TreeMap` did not work.
+- Changing Map projection with `panBehavior = "rotateLongLat"` could cause a JS error.
+- Changing `TreeMap` data after chart size changed could cause zoom-out button to appear.
+- Solved flickering of stacked columns when raw data was invalidated.
+- Updating data of a `TreeMap` when animation was playing could result in a JS error.
+
+
+## [4.3.5] - 2019-03-29
+
+### Added
+- New properties `strokeLinejoin` ("miter" | "round" | "bevel") and `strokeLinecap` ("butt" | "square" | "round") added to `Sprite`. [More info](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Fills_and_Strokes#Stroke).
+
+### Fixed
+- In some rare cases EDGE/IE could generate an "Unspecied error".
+- `MapChart` method `zoomToMapObject()` was not functioning properly since `4.3.4`.
+- `LineSeries` with bullet and `hidden = false` in init was causing the whole chart to break.
+
+
+## [4.3.4] - 2019-03-28
+
+### Fixed
+- Issue with JSON setups for `MapChart` fixed.
+
+
+## [4.3.3] - 2019-03-27
+
+### Fixed
+- `MapPolygonSeries.geodataSource` was not working.
+- `MapChart` was not showing data if `geodata` was set later than data on series.
+- When there were multiple data items with identical timestamps on `DateAxis`, the first ones could have been ignored.
+- Even if `legend.itemContainer.template.togglable` was set to `false`, Legend item was stil togglable.
+- Extra graticules (grid) was shown in `GraticuleSeries` unders some conditions.
+- Tooltips on a logarithmic `ValueAxis` were showing wrong values.
+- Value label for "0" could sometimes appear on top of logarithmic `ValueAxis`.
+- `MapChart` position was not correct if padding was set.
+
+
+## [4.3.2] - 2019-03-26
+
+### Fixed
+- `MapChart` dispose error fixed.
+
+
+## [4.3.1] - 2019-03-26
+
+### Fixed
+- Bug with live data updates fixed.
+
+
+## [4.3.0] - 2019-03-26
+
+### Added
+- `MapChart` can now use any projection supported by [d3-geo](https://www.npmjs.com/package/d3-geo). `Projection.d3Projection` property added and you can set any d3-geo projection using it, like: `mapChart.projection.d3Projection = am4maps.d3geo.geoConicEquidistant();`.
+- Albers, AlbersUsa, AzimuthalEqualArea, EqualEarth, NaturalEarth1, Stereographic projection classes added (use them regularly like: `mapChart.projection = new EqualEarth()`).
+- `deltaLatitude`, `deltaGamma` added to `MapChart`. Together with already existing `deltaLongitude` allows rotating maps in any possible direction.
+- `panBehavior` property added to `MapChart`. Values: "move" (default), "rotateLat", "rotateLong", "rotateLongLat". Indicate what should happen when map is dragged.
+- `ignoreBounds` added to `MapSeries`. Specifies if this series must be included when calculating bounds of the map.
+- `calculateVisualCenter` added to `MapPolygonSeries`. Specifies if map polygons should calculate their visual center. Visual center is good for placing labels.
+- `visualLongitude` and `visualLatitude` getters added to `MapPolygon`. They return coordinates if `calculateVisualCenter` of series is set to `true`. You can also set them manually.
+- `getCircle()` and `getBackground()` methods added to `MapUtils`.
+- `Graticule` and `GraticuleSeries` classed added. Those allow creating graticules (map grid).
+- `backgroundSeries` added to MapChart. Allows creating a map-shaped background fill.
+
+### Changed
+- Engine behind rendering of maps was changed to use [d3-geo](https://www.npmjs.com/package/d3-geo).While the change should be backwards compatible, beware of and report any issues.
+- `day-night-map` and `morphing-countries` demos we changed to work properly with new version.
+- When adding a `HeatLegend` to `MapChart` its `valign = "bottom"` is no longer set by default. Set it explicitly if you need legend to bottom-aligned.
+
+### Fixed
+- `rtl` setting was not being inherited properly.
+- Fixed RTL behavior for labels.
+- Disposing a hovered chart with scroll pan enabled used to leave whole document with disabled wheel scroll.
+
+
+## [4.2.6] - 2019-03-21
+
+### Fixed
+- `CategoryAxis` was breaking down after dynamic data update since 4.2.4.
+
+
+## [4.2.5] - 2019-03-21
+
+### Added
+- New property `minPolylinestep` added to global `am4core.options`. Setting to bigger value (default: `0.5`) allows simplification of multi-point lines.
+- Export: new setting `useSimplifiedExport` (default: `true`). Setting to `false` will force use of external library (canvg) for all exports.
+
+### Fixed
+- `XYCursor` with pan behavior used to remain in "grabbing" mode after click on zoom out button.
+- Export: Menu was not working properly on Mobile Safari.
+- Export: Menu was not working properly on Android Chrome.
+- Export: Exporting of PDF/XSLX is now supported on Mobile Safari.
+- Export: Exporting images in IE9 was broken.
+- Stacks with pre-hidden series were showing incorrectly.
+- `DateAxis` no longer ignores `renderer.tooltipLocation`.
+
+
+## [4.2.4] - 2019-03-19
+
+### Added
+- `autoGapCount` added to `LineSeries`. If `connect = false` and distance between two data points is bigger than `baseInterval * autoGapCount`, a line will break automatically.
+
+### Fixed
+- `IPlugin` now accepts `Optional<Sprite>`.
+- `XYCursor` will not longer obstruct page scroll if its `behavior` is set to `"none"`.
+- JSON config: setting `geodata` by name (e.g. "worldLow") directly in `MapSeries` was not working.
+- JSON config: Instantiating new `ColorSet` objects was not working properly.
+- `DateFormatter` was not parsing dates like "20180101" (no separators) correctly.
+- An issue with `DateAxis` and milliseconds fixed.
+- `dataItem.locations.dateX` on `LineSeries` was not working properly.
+
+
+## [4.2.3] - 2019-03-14
+
+### Fixed
+- Exporting via API from a chart that did not have `ExportMenu` set, was resulting in error.
+- Fixed tooltip flickering that were set directly on series objects (columns/bullets).
+- Because of daylight saving, sometimes `DateAxis` could mistake yearly data for monthly data if `baseInterval` was not set explicitly.
+- Sometimes Sankey nodes did not perfectly fit into chart area.
+- Tick `location` on Y axis was being ignored.
+- Ticks were positioned incorrectly when multiple axes were on the same side of the `XYChart`.
+- Issue with `strictMinMax` and single data item fixed.
+- `valueY` (or any other value) wasn't working in `legendSettings.itemLabelText`.
+
+
+## [4.2.2] - 2019-03-13
+
+### Added
+- `cursorHoverEnabled` added to `XYSeries`. Controls whether to trigger hover state on columns/bullets of the all series under hovered category/date.
+- A new `plugins` property on all `Sprite`. [More info](https://www.amcharts.com/docs/v4/concepts/plugins/).
+- New plugin: Regression. [More info](https://www.amcharts.com/docs/v4/tutorials/regression-trend-lines/).
+- New `ExportMenu` setting: `closeOnClick` (default `true`). Will force export menu to close when export is initiated.
+
+### Changed
+- `DateFormat` will now parse even partial dates, e.g. format `"yyyy-MM-dd"` will parse `"2018"` correctly, and will assume Jan 1st.
+
+### Fixed
+- Export: `getImage()`/`getSVG()` will now correctly omit `exportable = false` elements.
+- Export: Data export was not taking in additional columns after data updates.
+- Some chart cloning issues fixed.
+- Inccorrect behavior of Series' tooltip with `minBulletDistance` set fixed.
+- Sometimes, when series had only one data item, chart used to zoom-in right after the init.
+- In-line date formatting will now use `DateFormatter`'s parsing functions for string-based dates.
+- `DateAxis` issues with certain timezones fixed.
+
+
+## [4.2.1] - 2019-03-08
+
+### Fixed
+- Various graphical issues when using `<base>` tag (mostly affects Angular).
+- `NumberFormatter` did not have a public accessor to set `negativeBase`.
+
+
+## [4.2.0] - 2019-03-06
+
+### Added
+- Added read-only property of `CategoryAxis`: `frequency`. Indicates every X label is shown.
+- Added JSON example of Candle stick chart (json/candlestick-series).
+- New `Export` property: `extraSprites`. May contain a list of references to other `Sprites` (e.g. external legend or even other chart) to attach to exported image. [More info](https://www.amcharts.com/docs/v4/concepts/exporting/#Including_external_elements).
+- Experimental responsive features and default rules are now active. [More info](https://www.amcharts.com/docs/v4/concepts/responsive/).
+
+### Changed
+- Accessibility: Default role of the Legend's item containers was changed to "switch".
+
+### Fixed
+- Accessibility: Legend's containers when toggling items were setting value of `aria-checked` incorrectly.
+
+
+## [4.1.14] - 2019-03-01
+
+### Changed
+- Hiding or showing an element will now automatically set its `readerHidden` attribute accordingly.
+
+### Fixed
+- JSON: Using `children` with an array value was duplicating elements.
+- Working around a bug with Angular's dead code elimination in `--prod` mode.
+- Fixed `ValueAxis` issue with animation when there's only single data item.
+
+
+## [4.1.13] - 2019-02-26
+
+### Added
+- New `Tooltip` proprety: `keepTargetHover` - will make target element hovered as long as its tooltip is hovered, good for bullets and map images.
+- New `Tooltip` proprety: `targetSprite` - contains reference to element this tooltip is displayed for, if any.
+- New `PictorialStackedSeries` properties: `startLocation` and `endLocation` - allow setting relative start and end positions of the shape to fill.
+- New `FunnelSeries`/`PyramidSeries`/`PictorialStackedSeries` property: `labelsOpposite` - allows controlling which side of the series to show labels when `alignLabels = true`.
+
+### Fixed
+- Sometimes axis ticks on a chart with a lot of data/series were not positioned properly.
+
+
+## [4.1.12] - 2019-02-25
+
+### Changed
+- On `MapPolygon` default value of `nonScalingStroke` is now set to `true` (as `false`).
+- When calculating font size for a word on a `WordCloud` chart it now uses smaller side of the series area instead of height.
+- `Tooltip`'s label `paddingBottom` default value changed from `6` to `4` pixels for better centering of text.
+
+### Fixed
+- Sometimes `baseInterval = "year"` on a `DateAxis` could cause stack overflow.
+
+
+## [4.1.11] - 2019-02-25
+
+### Changed
+- Default value of `minFontSize` in `WordCloudSeries` to `2%`.
+- Default value of `maxFontSize` in `WordCloudSeries` to `20%`.
+- Label sizing algorithm updated in `WordCloudSeries`.
+
+
+## [4.1.10] - 2019-02-24
+
+### Added
+- New chart type: [WordCloud](https://www.amcharts.com/docs/v4/chart-types/wordcloud/).
+
+### Changed
+- Rotated axis labels (`rotation != 0`) of the vertical and horizontal axes no longer have their `verticalCenter` and `horizontalCenter` overridden by renderer. This gives more freedom for positioning rotated labels.
+
+### Fixed
+- `exportable = false` was not working when set on various Series item templates.
+- On Gantt chart date axis tooltip was snapping randomly when moving mouse.
+- Export: For very large data sets (2MB and up) data export was failing silently in Chrome.
+
+
+## [4.1.9] - 2019-02-20
+
+### Added
+- New `Sprite` property: `baseSprite`. On objects, even deep in hierarchy it will contain a reference to the main chart object.
+
+### Changed
+- Axis `min`/`max` calculation algorightm updated.
+
+### Fixed
+- On a chart with `DateAxis` and multiple series with same-date data items, bullets could sometimes disappear while scrolling the chart.
+- On `DateAxis` with yearly granularity could sometimes show wrong year.
+- Updating chart `data` with less data points was sometimes resulting in JavaScript error.
+- `DateAxis` labels/ticks/grid was not placed in the correct position if `baseInterval.count > 1` and `location > 0`.
+- Dynamically changing `ZoomControl` value of `layout` was not working correctly.
+
+
+## [4.1.8] - 2019-02-15
+
+### Added
+- JSON: You can now specify both list of items and template settings for `ListTemplate`, e.g.: `titles: { template: { ... }, values: [{ ... }] }`. Specifying it the old way will still work.
+
+### Changed
+- `DateAxis` will now pay attention to `dateFormatter.firstDayOfWeek` when grid is in "weekly" mode.
+
+### Fixed
+- Using `proprtyFields` on a `LineSeries` sometimes could result in an error. (fix by @AndiLi99)
+- French locale (fr_FR) updated for correct decimal/thousands separators.
+- Export: `scale` in image export options was being ignored.
+- JSON: `cursor.snapToSeries` was not working in JSON configs.
+- Selection was acting funky when zooming `DateAxis` and cursor moved out of plot area.
+- An infinite error message loop fixed which was happening if series was added and there was no X or Y axes defined.
+- Tooltip on the last available data item was left visible even if cursor moved to the date where the series had no data points.
+- When `snapToSeries` was enabled in `XYCursor`, vertical line was not shown.
+- [Issue 933.](https://github.com/amcharts/amcharts4/issues/933)
+
+
+## [4.1.7] - 2019-02-14
+
+### Fixed
+- `DateAxis` sometimes could show date/time in UTC even if not explicitly enabled.
+
+
+## [4.1.6] - 2019-02-12
+
+### Added
+- New plugin chart type: [`Sunburst`](https://www.amcharts.com/docs/v4/chart-types/sunburst/)!
+- New `Sprite` adapter: `criticalError`. Takes `Error` object as an argument. Modify it's `message` property.
+
+### Fixed
+- Export was somewhat broken in Angular apps or pages with `<base>` since 4.1.5.
+- `DateAxis` was not positioning elements properly when spanning switch to/from daylight savings time.
+- `valign` property of the horizontal axis labels now work properly.
+
+
+## [4.1.5] - 2019-02-11
+
+### Added
+- New property `contextMenuDisabled` (default `false`) added to `Sprite`. If set to `true` it will prevent context menu (such as one displayed on right click) from displayed.
+
+### Changed
+- Setting `data` on `ColorSet` will now automatically reset iterator.
+
+### Fixed
+- `"rightclick"` event was essentially not working.
+- Angular with router enabled were breaking charts in Safari and older Firefox.
+
+
+## [4.1.4] - 2019-02-08
+
+### Added
+- `DateAxis.gridInterval` accessor added. Returns current grid interval.
+
+### Fixed
+- Calling `useTheme()` with the same theme multiple times used to cause that theme applied multiple times as well.
+- Sometimes `ValueAxis` would not zoom-out to show new selected range when data was updated.
+- Sometimes axis fills were not visible after zoom-in / zoom-out.
+- `totalPercent` was not properly calculated with negative values.
+
+
+## [4.1.3] - 2019-02-06
+
+### Fixed
+- `ExportMenu` items will be revalidated if data of the chart is updated. This helps avoid missing "Data" export items in menu if data is loaded later than the chart itself.
+- In stacked axes setup axis tooltips were shown in wrong positions.
+- Preloader was not always shown when needed.
+- JavaScript error when hovering cursor over missing data items fixed.
+- `TreeMap` data change performance improved.
+- Horizontal `ZoomControl` (`layout = "horizontal"`) button text vertical align fix.
+- Accellerated panning of zoomed-in axis problem fixed.
+
+
+## [4.1.2] - 2019-02-05
+
+### Added
+- New `Sprite` property `strokeDashoffset` added. Can be used in conjunction with `strokeDasharray`.
+- `Label` has two new properties: `path` and `locationOnPath`. If set, will layout the SVG text along a curvature of the SVG path. HTML and multi-line text is not supported.
+- `AxisLabelCircular` new property `bent` added. If set to `true`, the label will be bent to follow the curvature of the circle. Distance from the circle can be adjusted using `radius` and `label.paddingBottom`. For `PieSeries` the alignLabels need to to be set to `false` for this feature to work.
+
+### Fixed
+- JSON: Having property values with both percent and minus signs in them, was resulting in error.
+- "Z" code in `DateFormatter` was not taking UTC setting into account.
+- Exporting SVG with Unicode characters in Edge/IE was resulting in invalid SVG.
+- Fixed JavaScript error which used happen when disposing chart/changing data in some cases.
+- Gantt chart sometimes was not displaying first/last data item.
+- Newly added `MapLine` elements were not respecting `nonScalingStroke = true` until zoom level changed.
+- Series' tooltip was not always visible with `DateAxis`.
+
+
+## [4.1.1] - 2019-01-31
+
+### Added
+- `keepSelection` added to `ValueAxis` (will work on DateAxis too). With this set to `true`, axis will keep the relative selection when data changes (is updated). This is useful for "pre-zooming" a date axis: just set it's `start` property (e.g. `axis.start = 0.8`).
+
+### Changed
+- If `ValueAxis` has `strictMinMax = true` set but `min` and `max` are not set, axis will fix the min and max and real high/low values.
+
+### Fixed
+- `cursorTooltipDisabled = true` was not working properly in some cases.
+- Sometimes duplicate `MapLineObjects` used to appear on map lines.
+- Some fixes made so that vertically and horizontally stacked axes on `XYChart` are now possible. Check new example in `examples/vertically-stacked-axes`.
+
+
+## [4.1.0] - 2019-01-30
+
+### Changed
+- Standalone scripts were recompiled to use unique Webpack scope, to avoid conflicts with other Webpack packages. If you are using map charts, to avoid breakage, make sure you update to 4.1 version of geodata package as well.
+
+### Fixed
+- Performance optimizations of date-based charts, especially with more than one series.
+- Overlapping tooltips of series with gaps in date-based data fixed.
+- Bullets were not hidden when series was hidden in some cases.
+- `simplifiedProcessing` moved from `ColumnSeries` to `Series`. If set to `true` (default `false`) the chart will not auto-calculate derivative values for data items, like sum, average, change, etc.
+- Last grid of monthly data was not always drawn.
+
+
+## [4.0.24] - 2019-01-25
+
+### Fixed
+- `nonScalingStroke` (broken in 4.0.23) fixed.
+- Legend custom adapters problem (broken in 4.0.23) fixed.
+
+
+## [4.0.23] - 2019-01-25
+
+### Changed
+- `PieChart3D` property `angle` is now limited to 0-90 range.
+
+### Fixed
+- `LabelBullet` was not showing text on `RadarChart` without some additional tweaking.
+- Clicking and releasing on plot area without moving cursor sometimes could result in chart zooming in.
+- Bullets for `PieSeries`, `FunnelSeries` were not positioned properly.
+- Labels of `PieSeries3D` were not being positioned properly if `alignLabels = false` and `label.radius < 0`.
+- Axis' grid was not hidden when axis was hidden.
+- It was not possible to disable funnel series ticks if `alignLabels = true`.
+- Adding a `MapLine` on zoomed `MapChart` ignored `nonScalinStroke = true` until zoom.
+- On Gantt chart horizontal axis' labels/grid used to bleed out outside the plot area when zoomed in significantly.
+- Columns of `ColumnSeries` with `strokeOpacity > 0` could leave lines at the beginning/end of the plot area when zoomed-in.
+- Adapters for `fontSize`, `textDecoration` and some other `Label`-related properties were not working properly.
+- Chart legend was not updated if data was set directly on `PercentSeries`.
+- `MapChart` was drawing only 109 MapLines in some cases.
+- `MapLine` tooltip was not being positioned properly.
+- When `invalidateRawData()` was called for a chart with a `DateAxis` while it was zoomed-in, the chart was not keeping current zoom.
+- If data was added to a series while it was hidden, bullets of new data items were not hidden.
+- `columns` of `ColumnSeries` were not being cleared when data was updated.
+- `propertyFields.fill`/`stroke` was not respected when value was outside zoom range.
+- Ticks on a `PieChart3D` were misaligned.
+- `Preloader` of a second and any subsequent chart on the same page was not being centered.
+- `PercentChart` legend markers where black if `legend.useDefaultMarker = true`.
+- `PercentChart` legend markers could blink black initially before obtaining true color.
+- The color scale on a vertical `HeatLegend` with `markersCount > 2` was being drawn reversed.
+
+
+## [4.0.22] - 2019-01-23
+
+### Added
+- 23 new locales: Arabic, Bosnian, Catalan, Czech, Greek, Estonian, Finnish, Hebrew, Hindi, Croatian, Hungarian, Indonesian, Japanese, Korean, Latvian, Polish, Romanian, Serbian, Thai, Turkish, Vietnamese, Chinese (simplified and traditional versions). Thanks Bjorn Svensson!
+
+### Fixed
+- It is no longer necessary to use `"strictFunctionTypes": false`, [thanks to goloveychuk for their help](https://github.com/amcharts/amcharts4/pull/645).
+- Broken images were causing export to fail.
+- Setting Series' `name` to a number with percent sign was resulting in breakage of the whole chart.
+
+
+## [4.0.21] - 2019-01-11
+
+### Fixed
+- Issues that caused errors in Map an Percent charts on data update and dispose fixed.
+
+
+## [4.0.20] - 2019-01-11
+
+### Fixed
+- Chart with `ColumnSeries` was failing with an error when `data` was updated.
+
+
+## [4.0.19] - 2019-01-11
+
+### Fixed
+- `MapLineSeries` with direct `data` set were somewhat broken since last update.
+
+
+## [4.0.18] - 2019-01-10
+
+### Added
+- JSON: Better id checking and error reporting.
+
+### Fixed
+- Export menu no longer shows DATA menu for `MapChart` (and other charts if data is empty).
+- JSON: Some empty properties like `dummyData` were not being set properly.
+- Disposing a chart or series when `Legend` was enbled was resulting in error.
+
+
+## [4.0.17] - 2019-01-09
+
+### Fixed
+- Dramatically improved performance for data-heavy charts (with 10s and 100s of thousands of data points).
+- `SmallMap` viewport indicator rectangle was positioned incorrectly.
+- Clicking on `SmallMap` was not moving map to corthis.component.rect location.
+- Lines from GeoJSON were not drawn by `MapLineSeries`.
+- Issue with multiple data points on the same date fixed (not all data points were visible at the end of selection).
+
+
+## [4.0.16] - 2019-01-05
+
+### Added
+- New locales: Norwegian Bokmål (np_NO), Danish (da_DK).
+
+### Changed
+- Renamed Swedish locale to `sv_SE`.
+
+### Fixed
+- Interactions on MacOS Safari was broken sincle last update.
+
+
+## [4.0.15] - 2019-01-04
+
+### Added
+- `color` property added to `LegendDataItem`. Can be used for coloring `label` or `valueLabel` text like `text = "[{color}] {name}"`.
+- `minZoomCount` added to `Component`.
+- Export now allows formatting numberic values as durations. Use newly added `durationFields` and `durationFormat` settings.
+
+### Changed
+- Export: When exporting date to XLSX, date fields will now export as true date fields in Excel (which in turn will format them according to regional settings), unless `useLocal` is set to `false`.
+
+### Fixed
+- Charts were not working properly in FireFox Extended Support Release.
+- Some computer setups were not properly registering mouse movement.
+- `legendSettings` was being ignored initially if legend was in external container.
+- "Week year" (format code `"YYYY"`) was not being properly calculated.
+
+
+## [4.0.14] - 2019-01-02
+
+### Added
+- New setting `zoomStep` added to `MapChart`. Allows controlling zoom in/out speed.
+
+### Fixed
+- `Series.hidden` did not work as expected.
+- World map did not work in Ember.
+- Eliminated multiple warnings in recent version of Chrome regarding wheel events being active.
+- Fixed mousewheel zoom in IEs.
+- Draggable/resizable items were not working properly on some Android browsers.
+- Setting `height` to a relative value for a horizontal `ColumnSeries` column template was not working propertly.
+
+
+## [4.0.13] - 2018-12-26
+
+### Fixed
+- Charts were broken in IE9.
+
+
+## [4.0.12] - 2018-12-24
+
+### Fixed
+- Cursor/mouse operations were somewhat broken in IE11 and lower.
+
+
+## [4.0.11] - 2018-12-24
+
+### Added
+- `"disabled"` and `"enabled"` events added to `Sprite`.
+- `cursorTooltipEnabled` added to `XYSeries`  If set to `false` cursor will not trigger bullet/item tooltips on series.
+
+### Changed
+- IMPORTANT (CODE-BREAKING CHANGES) For performance reasons we no longer create axis elements if they are disabled. For the same reasons we disabled by `axis.ticks` and `axis.axisFills` by default. Previously to enable them you had to set their `strokeOpacity` and/or `fillOpacity` to non-zero. This no longer will work. You will need to set `disabled` to `false` instead.
+- `axisRanges` now take their default values from `dateAxis.axisRanges.template` items (`axisFill`, `grid`, `tick`, `label`). Previously they were using the defaults from `dateAxis.renderer.label` etc. This was not comfortable and counter-intuitive.
+
+### Fixed
+- `XYChartScrollbar`'s value axis was calculating `min`/`max` with a very big step.
+- Ember plugin was throwing console errors.
+- Fixed occasional zoom-in issue on Mobile Safari.
+- `MapChart` mouse wheel zoom direction was inverted on some browsers.
+- Cursor was not snapping correctly to `DateAxis` items.
+- Multiple floating columns on the same category were disappearing when scrolling the chart.
+- Date range fills were off when zooming on Gantt Chart.
+- Overlapping tooltips problem solved.
+- When `snapToSeries` was set for a tooltip, it was flickering a lot on slower browsers.
+- `alignLabels = false` on a `PieSeries3D` was causing labels to be positioned incorrectly.
+- `PieSeries.dataFields.radiusValue` was not accounting for `chart.innerRadius`.
+- Dynamically updating `alignLabels` for `PieSeries` did not work correctly.
+- Legend: `itemValueText` only worked if `valueText` was set.
+- `ValueAxis` setting `maxZoomFactor = 1` was not working as expected.
+- Changing values for all data items sometimes was resulting in `ValueAxis` scale going into negative.
+- Some more tooltip and cursor related issues fixed.
+- Axis Fill did not properly fill the whole span when axis was scaled.
+
+
+## [4.0.10] - 2018-12-20
+
+### Fixed
+- In some situations, when `geodataSource` had events set, it was producing error.
+- `DateAxis` was not rounding intervals properly, could display grid at `15:01`, `15:31` etc.
+- Cloning an object was cloning sometimes was causing event handlers to be duplicated.
+- A leftover console debug line was removed.
+
+
+## [4.0.9] - 2018-12-19
+
+### Added
+- `snapToSeries` added to `XYCursor`. Allows setting series to which cursor lines should be snapped. Works if one of the axis of the series is `DateAxis` or `CategoryAxis`. Won't work if both axes are `ValueAxis`.
+- New example: Pie charts in Columns using JSON config.
+- Export: `emptyAs` added to both CSV and Excel export options. If set, missing values will be replaced with this value (default is empty string).
+- New event `"beforedisposed"` added to `Sprite`. Kicks in right before the element starts to dismantle itself.
+- Italian translation.
+
+### Changed
+- Export: if no `dataFields` specify it will now look for fields in all of the data, not just the first line.
+- When creating a new state on an object, it will not automatically propagate itself on object's clones if `applyOnClones = true`.
+- Setting `Container`'s `setStateOnChildren` will now propage to the new value to its existing clones if `applyOnClones = true`.
+- In case `deepInvalidate()` is called on `Container`, it forces labels to redraw.
+- `filters` on `SpriteState` is now `List` (was `ListTemplate`). It's better for performance which does not require creating Filter template object.
+
+### Fixed
+- Clicking a hoverable/clickable object was resultin in "over" and "out" events generated next to "hit".
+- JSON: properties to existing `List` items were not being applied properly.
+- Using geodata in Ember app was causing errors (Issue 672).
+- Export to CSV/Excel was following first line of data values. It now respects `dataFields` setting, and will replace missing values with `emptyAs` (new options setting).
+- Wheel-scrolling in MacOS Safari was very slow.
+- HTML-based tooltips were too small to fit the actual contents on MaCOS Safari.
+- `DateFormatter` was not parsing `"i"` format as local timezone, rather than UTC.
+- Sometimes bullets with `Rectangle` element in them were not positioned properly.
+- If category was named `"undefined"`, it was messing up label positions on `CategoryAxis`.
+- State's property value was not being applied if current value of the property was `undefined`.
+- Performance of `PieChart` and `RadarChart` improved dramatically under IEs.
+- In some cases `"ready"` event was not being fired.
+- `FunnelSeries` with 0 (zero) value slices was not rendered correctly.
+
+
 ## [4.0.8] - 2018-12-11
 
 ### Added

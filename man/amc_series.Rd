@@ -4,10 +4,13 @@
 \alias{amc_series}
 \title{Add series parameters}
 \usage{
-amc_series(x, ...)
+amc_series(x, type = "PieChart", ...)
 }
 \arguments{
 \item{x}{A \code{rAmCharts4} \code{htmlwidget} object.}
+
+\item{type}{\code{character} type of granh, can be PieChart, XYChart,
+RadarChart, SankeyDiagram, TreeMap, ChordDiagram, SlicedChart...}
 
 \item{...}{Arguments defined in \url{https://www.amcharts.com/docs/v4/}.}
 }
