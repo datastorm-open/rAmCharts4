@@ -7,3 +7,8 @@ dependencies:
     version: 4.0.0
     src: htmlwidgets/lib/amcharts4
     script: charts.js
+  - name: sunburst
+    version: 4.0.0
+    src: htmlwidgets/lib/amcharts4/plugins
+    script: sunburst.js
+
