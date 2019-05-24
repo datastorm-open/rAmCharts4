@@ -43,6 +43,8 @@ amSlicedChart <- function(..., width = NULL, height = NULL){
   amCharts4(..., type = "SlicedChart", width = NULL, height = NULL)
 }
 
+#' Gauge chart
+#'
 #' @export
 #'
 #' @examples
