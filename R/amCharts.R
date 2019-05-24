@@ -1,9 +1,9 @@
 #' @import htmlwidgets
 #' @export
 amCharts4 <- function(..., type, width = NULL, height = NULL) {
-  
+
   x <- list(opts = list(...), type = type)
-  
+
   # create the widget
   htmlwidgets::createWidget("rAmCharts4", x, width = width, height = height)
 }
@@ -43,6 +43,16 @@ amSlicedChart <- function(..., width = NULL, height = NULL){
   amCharts4(..., type = "SlicedChart", width = NULL, height = NULL)
 }
 
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'    amGaugeChart(xAxes = list(list(type = "ValueAxis", min = 0, max = 100)))
+#' }
+#'
+amGaugeChart <- function(..., width = NULL, height = NULL){
+  amCharts4(..., type = "GaugeChart", width = NULL, height = NULL)
+}
 
 
 #' Shiny bindings for rAmCharts4
@@ -84,15 +94,15 @@ renderAmCharts4 <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' @rdname rAmCharts4-shiny
 #' @export
 amCharts4Proxy <- function(shinyId, data = NULL, session = shiny::getDefaultReactiveDomain()) {
-  
+
   if (is.null(session)) {
     stop("amCharts4Proxy must be called from the server function of a Shiny app")
   }
-  
+
   if (!is.null(session$ns) && nzchar(session$ns(NULL)) && substring(shinyId, 1, nchar(session$ns(""))) != session$ns("")) {
     shinyId <- session$ns(shinyId)
   }
-  
+
   structure(
     list(
       session = session,
