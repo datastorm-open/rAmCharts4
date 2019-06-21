@@ -13,6 +13,10 @@ amc_series(x, type = "PieChart", ...)
 RadarChart, SankeyDiagram, TreeMap, ChordDiagram, SlicedChart...}
 
 \item{...}{Arguments defined in \url{https://www.amcharts.com/docs/v4/}.}
+
+\item{stroke}{A \code{character} color, hexa.}
+
+\item{strokeWidth}{A \code{interger} size.}
 }
 \value{
 A \code{rAmCharts4} \code{htmlwidget} object.

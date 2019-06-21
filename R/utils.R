@@ -73,6 +73,8 @@ amc_data <- function(x, data) {
 #' @param x A \code{rAmCharts4} \code{htmlwidget} object.
 #' @param type \code{character} type of granh, can be PieChart, XYChart,
 #'  RadarChart, SankeyDiagram, TreeMap, ChordDiagram, SlicedChart...
+#' @param stroke A \code{character} color, hexa.
+#' @param strokeWidth A \code{interger} size.
 #' @param ... Arguments defined in \url{https://www.amcharts.com/docs/v4/}.
 #'
 #' @return A \code{rAmCharts4} \code{htmlwidget} object.
