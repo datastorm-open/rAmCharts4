@@ -119,6 +119,27 @@ amSunburst <- function(..., width = NULL, height = NULL){
 }
 
 
+
+#' Word Cloud
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' amWordCloud(data = data.frame(tag = c("My", "Best", "Word"),
+#'                               weight = c(100, 200, 300)),
+#'             series = list(list(type = "WordCloudSeries",
+#'                                dataFields = dataFields(
+#'                                  word = "tag",
+#'                                  value = "weight"))))
+#'
+#' }
+#'
+amWordCloud <- function(..., width = NULL, height = NULL){
+  amCharts4(..., type = "WordCloud", width = NULL, height = NULL)
+}
+
+
 #' Shiny bindings for rAmCharts4
 #'
 #' Output and render functions for using rAmCharts4 within Shiny

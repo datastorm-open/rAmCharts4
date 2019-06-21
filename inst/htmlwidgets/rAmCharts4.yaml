@@ -11,4 +11,8 @@ dependencies:
     version: 4.0.0
     src: htmlwidgets/lib/amcharts4/plugins
     script: sunburst.js
+  - name: wordCloud
+    version: 4.0.0
+    src: htmlwidgets/lib/amcharts4/plugins
+    script: wordCloud.js
 
