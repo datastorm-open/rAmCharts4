@@ -18,7 +18,10 @@ HTMLWidgets.widget({
 
         if(x.type != "Sunburst")
         {
-          x.opts.data = HTMLWidgets.dataframeToD3(x.opts.data);
+           if(x.type != "TreeMap")
+          {
+            x.opts.data = HTMLWidgets.dataframeToD3(x.opts.data);
+          }
         }
 
         chart = am4core.createFromConfig(x.opts, chartdiv, x.type);
